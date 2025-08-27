@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from typing import List  # 👈 new import
 
 app = FastAPI(title="ProPair API (Baby Starter)", version="0.0.1")
 
+# CORS: wide open while learning
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,25 +16,13 @@ app.add_middleware(
 @app.get("/health")
 def health():
     return {"ok": True}
-async function getProviders() {
-  const base = process.env.NEXT_PUBLIC_API_URL!;
-  const res = await fetch(`${base}/providers`, { cache: "no-store" });
-  return res.json();
-}
 
-export default async function ProvidersPage() {
-  const providers = await getProviders();
-
-  return (
-    <main>
-      <h1 style={{ fontSize: "28px", marginBottom: 12 }}>Browse Providers</h1>
-      <ul>
-        {providers.map((p: any) => (
-          <li key={p.id}>
-            {p.name} — ⭐ {p.rating}
-          </li>
-        ))}
-      </ul>
-    </main>
-  );
-}
+# 👇 NEW ROUTE
+@app.get("/providers")
+def list_providers() -> List[dict]:
+    # Mock data for now
+    return [
+        {"id": 1, "name": "Jhonny the Painter", "rating": 4.7},
+        {"id": 2, "name": "Joshua Roofing", "rating": 4.9},
+        {"id": 3, "name": "Ami Renovations", "rating": 4.5},
+    ]
